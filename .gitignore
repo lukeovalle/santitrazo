@@ -1,0 +1,10 @@
+placa/seguidor-backups/
+placa/.history/
+placa/seguidor.kicad_prl
+placa/fp-info-cache
+placa/*.gbr
+placa/*.ps
+placa/*.pdf
+placa/*.svg
+placa/*.net
+
