@@ -8,9 +8,9 @@
 class LED {
   public:
     LED(int pin);
-    void turnOn();
-    void turnOff();
-    int getState();
+    void turnOn(void);
+    void turnOff(void);
+    int getState(void);
     
   private:
     int mPin;
