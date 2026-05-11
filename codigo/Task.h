@@ -13,7 +13,7 @@ class Task {
     unsigned long pendingTicks(void);
 
   private:
-    unsigned long mTick;
+    unsigned long mTick = 0;
 };
 
 #endif

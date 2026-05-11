@@ -6,10 +6,9 @@ Executor::Executor() {
   mTasksSize = 0;
 }
 
-void addTask(Task * task) {
-  
+void Executor::addTask(Task * task) {
+  mTasks[mTasksSize++] = task;
 }
-
 
 void Executor::increaseTicks(unsigned long ticks) {
   for (size_t i = 0; i < mTasksSize; i++) {

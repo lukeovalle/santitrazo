@@ -1,13 +1,17 @@
 #include "ClockMs.h"
 #include "Executor.h"
-#include "LED.h"
+#include "TaskLED.h"
 
 ClockMs clock; // counts ms between calls
 Executor executor;
 
-LED led(LED_BUILTIN); // Led de la placa
+// Defino mis tareas
+TaskLED led_arranque(LED_BUILTIN);
 
 void setup() {
+  // Agrego las tarreas al ejecutor
+  executor.addTask(&led_arranque);
+
   Serial.begin(9600);
 
   clock.init();
@@ -19,16 +23,4 @@ void loop() {
   executor.increaseTicks(ticks);
 
   executor.update();
-
-  led.turnOn();
-  Serial.print("Led state: ");
-  Serial.println(led.getState());
-
-  delay(2000);
-
-  led.turnOff();
-  Serial.print("Led state: ");
-  Serial.println(led.getState());
-
-  delay(2000);
 }
