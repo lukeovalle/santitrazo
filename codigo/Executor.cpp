@@ -12,9 +12,7 @@ void Executor::addTask(Task * task) {
 
 void Executor::increaseTicks(unsigned long ticks) {
   for (size_t i = 0; i < mTasksSize; i++) {
-    Task * task = mTasks[i];
-    
-    task->addTicks(ticks);
+    mTasks[i]->addTicks(ticks);
   }
 }
 

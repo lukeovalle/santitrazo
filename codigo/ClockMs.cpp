@@ -20,7 +20,7 @@ bool ClockMs::ms_passed(void) {
 
 unsigned long ClockMs::pending_ticks() {
   unsigned long now = millis();
-  unsigned long delta = mLastMs - now;
+  unsigned long delta = now - mLastMs;
 
   if (delta > 0) {
     mLastMs += delta;

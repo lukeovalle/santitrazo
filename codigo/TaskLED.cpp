@@ -6,10 +6,16 @@
 void TaskLED::init() {
   mState = ST_LED_OFF;
   mEvent = EV_LED_IDLE;
+
+  pinMode(mPin, OUTPUT);
 }
 
 void TaskLED::update() {
   _statechart();
+}
+
+void TaskLED::setEvento(task_LED_ev_t ev) {
+  mEvent = ev;
 }
 
 void TaskLED::_statechart() {
@@ -18,6 +24,7 @@ void TaskLED::_statechart() {
     if (mEvent == EV_LED_TURN_ON) {
       digitalWrite(mPin, HIGH);
       mState = ST_LED_ON;
+      mEvent = EV_LED_IDLE;
     }
     break;
 
@@ -25,11 +32,11 @@ void TaskLED::_statechart() {
     if (mEvent == EV_LED_TURN_OFF) {
       digitalWrite(mPin, LOW);
       mState = ST_LED_OFF;
+      mEvent = EV_LED_IDLE;
     }
     break;
 
   default:
     break;
   }
-
 }
