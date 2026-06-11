@@ -21,6 +21,9 @@ TaskController controlador(&contexto);
 void setup() {
   // Agrego las tarreas al ejecutor
   executor.addTask(&led_arranque);
+  executor.addTask(&boton_largada);
+
+
   executor.addTask(&controlador);
 
   Serial.begin(9600);

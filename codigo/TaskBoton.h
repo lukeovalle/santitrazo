@@ -20,13 +20,15 @@ typedef enum {
 
 class TaskBoton : public Task {
   public:
-    TaskBoton(int pin) : mPin(pin) {}
+    TaskBoton(int pin, unsigned int tickMax = 50) : mPin(pin), mTickMax(tickMax) {}
     void init(void) override;
     void update(void) override;
-    void setEvento(task_boton_ev_t ev);
+    bool estaPresionado(void);
 
   private:
     int mPin;
+    unsigned int mTickCnt;
+    unsigned int mTickMax;
     task_boton_st_t mState;
     task_boton_ev_t mEvent;
     void _statechart(void);

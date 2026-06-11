@@ -21,7 +21,8 @@ class TaskLED : public Task {
     TaskLED(int pin) : mPin(pin) {}
     void init(void) override;
     void update(void) override;
-    void setEvento(task_LED_ev_t ev);
+    void encender(void);
+    void apagar(void);
 
   private:
     int mPin;

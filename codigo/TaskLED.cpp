@@ -14,8 +14,12 @@ void TaskLED::update() {
   _statechart();
 }
 
-void TaskLED::setEvento(task_LED_ev_t ev) {
-  mEvent = ev;
+void TaskLED::encender() {
+  mEvent = EV_LED_TURN_ON;
+}
+
+void TaskLED::apagar() {
+  mEvent = EV_LED_TURN_OFF;
 }
 
 void TaskLED::_statechart() {

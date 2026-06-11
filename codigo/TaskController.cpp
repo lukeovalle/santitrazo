@@ -1,6 +1,8 @@
 // TaskController.cpp
 
 #include "TaskController.h"
+#include "TaskLED.h"
+#include "TaskBoton.h"
 
 void TaskController::init(void) {
   mState = ST_CONTROLLER_INIT;
@@ -8,6 +10,12 @@ void TaskController::init(void) {
 }
 
 void TaskController::update(void) {
+  if (mTareas->boton_largada->estaPresionado()) {
+    mTareas->led_arranque->encender();
+  } else {
+    mTareas->led_arranque->apagar();
+  }
+
   _statechart();
 }
 

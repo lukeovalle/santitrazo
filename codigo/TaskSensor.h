@@ -20,7 +20,6 @@ class TaskSensor : public Task {
     TaskSensor(int pin) : mPin(pin) {}
     void init(void) override;
     void update(void) override;
-    void setEvento(task_sensor_ev_t ev);
 
   private:
     int mPin;
