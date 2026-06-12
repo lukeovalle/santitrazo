@@ -12,7 +12,8 @@ typedef enum {
 
 typedef enum {
   EV_SENSOR_IDLE,
-  EV_SENSOR_READ,
+  EV_SENSOR_HIGH,
+  EV_SENSOR_LOW
 } task_sensor_ev_t;
 
 class TaskSensor : public Task {
@@ -20,6 +21,7 @@ class TaskSensor : public Task {
     TaskSensor(int pin) : mPin(pin) {}
     void init(void) override;
     void update(void) override;
+    bool estaActivo(void);
 
   private:
     int mPin;

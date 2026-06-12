@@ -26,6 +26,7 @@ void TaskController::_statechart(void) {
     break;
 
   default:
+    mState = ST_CONTROLLER_INIT;
     break;
   }
 }

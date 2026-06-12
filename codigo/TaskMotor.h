@@ -22,13 +22,18 @@ class TaskMotor : public Task {
     TaskMotor(int pin) : mPin(pin) {}
     void init(void) override;
     void update(void) override;
-    void setEvento(task_motor_ev_t ev);
+    void apagar(void);
+    void encender(void);
+    void cambiarVelocidad(int vel);
 
   private:
     int mPin;
+    int mVel;
     task_motor_st_t mState;
     task_motor_ev_t mEvent;
     void _statechart(void);
+    void _encenderPWM(void);
+    void _apagarPWM(void);
 };
 
 #endif
