@@ -1,12 +1,14 @@
-#include "Arduino.h"
 // TaskMotor.cpp
-
+#include <float.h>
+#include "Arduino.h"
 #include "TaskMotor.h"
+#include "utils.h"
 
 void TaskMotor::init(void) {
   mState = ST_MOTOR_OFF;
   mEvent = EV_MOTOR_IDLE;
   mVel = 0;
+  pinMode(mPin, OUTPUT);
 }
 
 void TaskMotor::update(void) {
@@ -23,7 +25,7 @@ void TaskMotor::encender(void) {
 
 void TaskMotor::cambiarVelocidad(int vel) {
   mEvent = EV_MOTOR_CHANGE_VELOCITY;
-  mVel = vel; // TODO: clamp entre 0 y 255
+  mVel = CLAMP(vel, 0, 255);
 }
 
 void TaskMotor::_statechart(void) {

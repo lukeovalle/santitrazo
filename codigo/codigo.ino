@@ -24,6 +24,9 @@ TaskMotor motor_der(6); // PD6
 controller_contexto contexto = {
   .led_arranque = &led_arranque,
   .boton_largada = &boton_largada,
+  .sensores = {&sensor1, &sensor2, &sensor3, &sensor4},
+  .motor_izq = &motor_izq,
+  .motor_der = &motor_der
 };
 TaskController controlador(&contexto);
 

@@ -3,7 +3,7 @@
 #ifndef EXECUTOR__H_
 #define EXECUTOR__H_
 
-#define N_TASKS 5
+#define N_TASKS 10
 
 #include <Arduino.h>
 #include "Task.h"
