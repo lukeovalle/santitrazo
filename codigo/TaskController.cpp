@@ -43,20 +43,23 @@ void TaskController::_statechart(void) {
       mTareas->motor_izq->apagar();
       mTareas->motor_der->apagar();
       mState = ST_CONTROLLER_INIT;
+      break;
     }
 
     // Lógica del PID
     int pid = _calcularPID();
 
-    if (pid > 0.0) {
-      mTareas->motor_izq->cambiarVelocidad(255);
-      mTareas->motor_der->cambiarVelocidad(255 - pid);
-    } else if (pid < 0.0) {
-      mTareas->motor_izq->cambiarVelocidad(255 + pid);
-      mTareas->motor_der->cambiarVelocidad(255);
+    int vel_max = 100; // valor máximo 255
+
+    if (pid > 0) {
+      mTareas->motor_izq->cambiarVelocidad(vel_max);
+      mTareas->motor_der->cambiarVelocidad(vel_max - pid);
+    } else if (pid < 0) {
+      mTareas->motor_izq->cambiarVelocidad(vel_max + pid);
+      mTareas->motor_der->cambiarVelocidad(vel_max);
     } else {
-      mTareas->motor_izq->cambiarVelocidad(255);
-      mTareas->motor_der->cambiarVelocidad(255);
+      mTareas->motor_izq->cambiarVelocidad(vel_max);
+      mTareas->motor_der->cambiarVelocidad(vel_max);
     }
 
     break;
@@ -70,9 +73,9 @@ void TaskController::_statechart(void) {
 }
 
 int TaskController::_calcularPID(void) {
-  const float k_prop = 1,
-              k_dif = 10,
-              k_inte = 1e-3;
+  const float k_prop = 1.0,
+              k_dif = 1e-2,
+              k_inte = 0.0;
 
   float error = _calcular_error();
 
