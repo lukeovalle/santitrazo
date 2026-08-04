@@ -5283,7 +5283,7 @@
 			)
 		)
 	)
-	(global_label "arranque"
+	(global_label "boton_largada"
 		(shape input)
 		(at 146.05 72.39 0)
 		(fields_autoplaced yes)
@@ -5295,7 +5295,7 @@
 		)
 		(uuid "077b0ea6-03ba-4fb4-8f5b-efd3f2303d6b")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 157.4412 72.39 0)
+			(at 162.5209 72.39 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5427,7 +5427,7 @@
 			)
 		)
 	)
-	(global_label "led_largada"
+	(global_label "led_arranque"
 		(shape input)
 		(at 146.05 74.93 0)
 		(fields_autoplaced yes)
@@ -5439,7 +5439,7 @@
 		)
 		(uuid "34c59a4d-e65e-430f-96a4-ae4c87853752")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 160.102 74.93 0)
+			(at 161.3116 74.93 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5667,7 +5667,7 @@
 			)
 		)
 	)
-	(global_label "arranque"
+	(global_label "boton_largada"
 		(shape input)
 		(at 182.88 58.42 180)
 		(fields_autoplaced yes)
@@ -5679,7 +5679,7 @@
 		)
 		(uuid "80d86993-70a8-458e-97e2-04b75fb1d7f2")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 171.4888 58.42 0)
+			(at 166.4091 58.42 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5787,7 +5787,7 @@
 			)
 		)
 	)
-	(global_label "led_largada"
+	(global_label "led_arranque"
 		(shape input)
 		(at 179.07 34.29 180)
 		(fields_autoplaced yes)
@@ -5799,7 +5799,7 @@
 		)
 		(uuid "c508095a-552a-4605-9e96-46076e909285")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 165.018 34.29 0)
+			(at 163.8084 34.29 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)

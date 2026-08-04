@@ -7,7 +7,7 @@ void TaskBoton::init(void) {
   mState = ST_BOTON_RELEASED;
   mEvent = EV_BOTON_IDLE;
 
-  pinMode(mPin, INPUT);
+  pinMode(mPin, INPUT_PULLUP);
 }
 
 void TaskBoton::update(void) {

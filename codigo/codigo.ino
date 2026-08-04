@@ -11,7 +11,7 @@ ClockMs clock; // counts ms between calls
 Executor executor;
 
 // Defino mis tareas
-TaskLED led_arranque(LED_BUILTIN); // PB5
+TaskLED led_arranque(10); // PB2
 TaskBoton boton_largada(9); // PB1
 TaskSensor sensor1(17); // PC3
 TaskSensor sensor2(16); // PC2
@@ -43,7 +43,7 @@ void setup() {
 
   executor.addTask(&controlador);
 
-  Serial.begin(9600);
+  Serial.begin(115200);
 
   clock.init();
   executor.init();

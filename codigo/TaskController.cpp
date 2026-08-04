@@ -1,11 +1,14 @@
 // TaskController.cpp
 
+#include <HardwareSerial.h>
 #include "TaskController.h"
 #include "utils.h"
 #include "TaskLED.h"
 #include "TaskBoton.h"
 #include "TaskSensor.h"
 #include "TaskMotor.h"
+
+static int ticks = 100;
 
 void TaskController::init(void) {
   mState = ST_CONTROLLER_INIT;
@@ -49,7 +52,7 @@ void TaskController::_statechart(void) {
     // Lógica del PID
     int pid = _calcularPID();
 
-    int vel_max = 100; // valor máximo 255
+    int vel_max = 255; // valor máximo 255
 
     if (pid > 0) {
       mTareas->motor_izq->cambiarVelocidad(vel_max);
@@ -73,9 +76,9 @@ void TaskController::_statechart(void) {
 }
 
 int TaskController::_calcularPID(void) {
-  const float k_prop = 1.0,
-              k_dif = 1e-2,
-              k_inte = 0.0;
+  const float k_prop = 1.5,
+              k_dif = 10,
+              k_inte = 1e-3;
 
   float error = _calcular_error();
 
@@ -88,8 +91,19 @@ int TaskController::_calcularPID(void) {
   float integral = k_inte * mAcumIntegralError;
 
   // parte diferencial
+  // podría dividir por un dt pero asumo que es constante y "está incluído " en k_dif
   float de_dt = (error - mPrevError);
   float diferencial = k_dif * de_dt;
+
+  ticks--;
+  if (!ticks) {
+    Serial.print(prop);
+    Serial.print(",");
+    Serial.print(integral);
+    Serial.print(",");
+    Serial.println(diferencial);
+    ticks = 100;
+  }
 
   mPrevError = error;
   return (int)(prop + integral + diferencial);
