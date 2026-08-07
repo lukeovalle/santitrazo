@@ -36,7 +36,7 @@ typedef struct {
 
 class TaskController : public Task {
   public:
-    TaskController(controller_contexto * contexto) : mTareas(contexto) {}
+    TaskController(controller_contexto * contexto, unsigned long periodTicks = 10) : Task(periodTicks), mTareas(contexto) {}
     void init(void) override;
     void update(void) override;
     

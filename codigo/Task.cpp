@@ -13,3 +13,11 @@ void Task::consumeTick() {
 unsigned long Task::pendingTicks() { 
   return mTick;
 }
+
+void Task::run(void) {
+  mPeriodCount++;
+  if (mPeriodCount >= mPeriodTicks) {
+    mPeriodCount = 0;
+    update();
+  }
+}

@@ -11,13 +11,25 @@ void TaskSensor::init(void) {
 }
 
 void TaskSensor::update(void) {
-  mEvent = (digitalRead(mPin) == HIGH) ? EV_SENSOR_HIGH : EV_SENSOR_LOW;
+  uint8_t lectura = (digitalRead(mPin) == HIGH) ? 1 : 0;
+
+  // cola circular con las últimas mediciones
+  mSuma -= mBuffer[mIndice];
+  mBuffer[mIndice] = lectura;
+  mSuma += lectura;
+  mIndice = (mIndice + 1) % SENSOR_VENTANA;
+
+  mEvent = lectura ? EV_SENSOR_HIGH : EV_SENSOR_LOW;
 
   _statechart();
 }
 
 bool TaskSensor::estaActivo(void) {
   return mState == ST_SENSOR_ON;
+}
+
+float TaskSensor::nivelActividad(void) {
+  return (float)mSuma  / SENSOR_VENTANA;
 }
 
 void TaskSensor::_statechart(void) {

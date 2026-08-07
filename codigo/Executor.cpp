@@ -31,7 +31,7 @@ void Executor::update() {
 
     while (task->pendingTicks() > 0) {
       task->consumeTick();
-      task->update();
+      task->run();
     }
   }
 }

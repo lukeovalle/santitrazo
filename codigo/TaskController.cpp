@@ -8,7 +8,7 @@
 #include "TaskSensor.h"
 #include "TaskMotor.h"
 
-static int ticks = 100;
+static int ticks = 10;
 
 void TaskController::init(void) {
   mState = ST_CONTROLLER_INIT;
@@ -102,7 +102,7 @@ int TaskController::_calcularPID(void) {
     Serial.print(integral);
     Serial.print(",");
     Serial.println(diferencial);
-    ticks = 100;
+    ticks = 10;
   }
 
   mPrevError = error;
@@ -115,13 +115,13 @@ float TaskController::_calcular_error(void) {
   float activos = 0;
 
   for (int i = 0; i < TAM_SENSORES; i++) {
-    int activo = mTareas->sensores[i]->estaActivo();
-    suma += sensores[i] * activo; // multiplico por 1 si está activo y 0 si no
+    float activo = mTareas->sensores[i]->nivelActividad();
+    suma += sensores[i] * activo; // multiplico por el valor sensado en rango [0, 1]
     activos += activo;
   }
 
   // si no se leyeron sensores, uso el último valor así sigue doblando hasta volver a la línea
-  if (activos == 0)
+  if (activos < 0.01f)
     return mPrevError;
 
   return suma / activos; // promedio

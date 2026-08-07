@@ -28,7 +28,7 @@ controller_contexto contexto = {
   .motor_izq = &motor_izq,
   .motor_der = &motor_der
 };
-TaskController controlador(&contexto);
+TaskController controlador(&contexto, 10); // corre cada 10ms
 
 void setup() {
   // Agrego las tarreas al ejecutor
