@@ -5,7 +5,7 @@
 
 #include "Task.h"
 
-#define SENSOR_VENTANA 10
+#define SENSOR_VENTANA 13
 
 typedef enum {
   ST_SENSOR_OFF,
