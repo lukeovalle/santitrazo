@@ -76,9 +76,9 @@ void TaskController::_statechart(void) {
 }
 
 int TaskController::_calcularPID(void) {
-  const float k_prop = 1.1,
-              k_dif = 8,
-              k_inte = 1.5e-3;
+  const float k_prop = 1.3,
+              k_dif = 13,
+              k_inte = 1.3e-2;
 
   float error = _calcular_error();
 
