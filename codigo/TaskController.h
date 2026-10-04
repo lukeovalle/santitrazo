@@ -49,6 +49,7 @@ class TaskController : public Task {
     task_controller_st_t mState;
     task_controller_ev_t mEvent;
     void _statechart(void);
+    void _reiniciarPID(void);
     int _calcularPID(void);
     float _calcular_error(void);
 };

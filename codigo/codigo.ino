@@ -7,7 +7,7 @@
 #include "TaskMotor.h"
 #include "TaskController.h"
 
-ClockMs clock; // counts ms between calls
+ClockMs reloj; // counts ms between calls (no se llama "clock" para no chocar con clock() de <time.h>)
 Executor executor;
 
 // Defino mis tareas
@@ -31,7 +31,7 @@ controller_contexto contexto = {
 TaskController controlador(&contexto, 10); // corre cada 10ms
 
 void setup() {
-  // Agrego las tarreas al ejecutor
+  // Agrego las tareas al ejecutor
   executor.addTask(&led_arranque);
   executor.addTask(&boton_largada);
   executor.addTask(&sensor1);
@@ -45,12 +45,12 @@ void setup() {
 
   Serial.begin(115200);
 
-  clock.init();
+  reloj.init();
   executor.init();
 }
 
 void loop() {
-  unsigned long ticks = clock.pending_ticks();
+  unsigned long ticks = reloj.pending_ticks();
   executor.increaseTicks(ticks);
 
   executor.update();

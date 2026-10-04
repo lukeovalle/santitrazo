@@ -3,6 +3,7 @@
 #ifndef TASK_SENSOR__H_
 #define TASK_SENSOR__H_
 
+#include <stdint.h>
 #include "Task.h"
 
 #define SENSOR_VENTANA 13
