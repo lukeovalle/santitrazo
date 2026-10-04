@@ -4,9 +4,10 @@ Seguidor de línea usando un atmega328p
 ## Estructura del directorio
 placa/      proyecto de KiCAD
 codigo/     código de Arduino
+cuerpo/     piezas mecánicas (FreeCAD + STL)
 
 
-## [TODO](TODO)
+## TODO
  - [ ] describir mejor el proyecto
 
 ## Mediciones 
@@ -19,6 +20,9 @@ Motores
 
 
 ## Valores PID
+Historial de pruebas. Los valores vigentes en el firmware están en las constantes
+`k_prop`, `k_inte` y `k_dif` de `codigo/TaskController.cpp`.
+
 P    | I      | D   | tiempo | pista grande
 0.85 | 1e-3   | 6   | 4.6    |
 0.9  | 2e-3   | 6   | 4.8    | 28

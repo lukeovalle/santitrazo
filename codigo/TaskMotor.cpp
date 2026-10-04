@@ -1,5 +1,4 @@
 // TaskMotor.cpp
-#include <float.h>
 #include "Arduino.h"
 #include "TaskMotor.h"
 #include "utils.h"
@@ -34,7 +33,7 @@ void TaskMotor::_statechart(void) {
     if (mEvent == EV_MOTOR_TURN_ON) {
       _encenderPWM();
       mState = ST_MOTOR_ON;
-    };
+    }
     break;
 
   case ST_MOTOR_ON:
@@ -60,5 +59,8 @@ void TaskMotor::_encenderPWM(void) {
 }
 
 void TaskMotor::_apagarPWM(void) {
+  // Pongo mVel en 0 para que al volver a encender el motor no arranque
+  // con la última velocidad de la corrida anterior.
+  mVel = 0;
   analogWrite(mPin, 0);
 }

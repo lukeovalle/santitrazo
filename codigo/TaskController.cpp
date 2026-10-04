@@ -1,6 +1,6 @@
 // TaskController.cpp
 
-#include <HardwareSerial.h>
+#include <Arduino.h>
 #include "TaskController.h"
 #include "utils.h"
 #include "TaskLED.h"
@@ -14,6 +14,14 @@ void TaskController::init(void) {
   mState = ST_CONTROLLER_INIT;
   mEvent = EV_CONTROLLER_IDLE;
   mBotonAnterior = false;
+  _reiniciarPID();
+}
+
+// Borra la memoria del PID (integral y error previo) para que una corrida
+// nueva no arrastre el estado de la anterior.
+void TaskController::_reiniciarPID(void) {
+  mPrevError = 0;
+  mAcumIntegralError = 0;
 }
 
 void TaskController::update(void) {
@@ -33,6 +41,7 @@ void TaskController::_statechart(void) {
   switch (mState) {
   case ST_CONTROLLER_INIT:
     if (mEvent == EV_CONTROLLER_BUTTON_PRESSED) {
+      _reiniciarPID();
       mTareas->led_arranque->encender();
       mTareas->motor_izq->encender();
       mTareas->motor_der->encender();
@@ -40,7 +49,7 @@ void TaskController::_statechart(void) {
     }
     break;
 
-  case ST_CONTROLLER_RUNNING:
+  case ST_CONTROLLER_RUNNING: {
     if (mEvent == EV_CONTROLLER_BUTTON_PRESSED) {
       mTareas->led_arranque->apagar();
       mTareas->motor_izq->apagar();
@@ -66,6 +75,7 @@ void TaskController::_statechart(void) {
     }
 
     break;
+  }
 
   default:
     mState = ST_CONTROLLER_INIT;
@@ -110,7 +120,7 @@ int TaskController::_calcularPID(void) {
 }
 
 float TaskController::_calcular_error(void) {
-  const float sensores[] = { -200, -100, 100, 200 }; // Pesos de cada sensor
+  static const float sensores[] = { -200, -100, 100, 200 }; // Pesos de cada sensor
   float suma = 0;
   float activos = 0;
 

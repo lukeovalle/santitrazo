@@ -28,7 +28,7 @@ void TaskLED::_statechart() {
     if (mEvent == EV_LED_TURN_ON) {
       digitalWrite(mPin, HIGH);
 
-      Serial.print("BOTON ");
+      Serial.print("LED ");
       Serial.print(mPin);
       Serial.println(": HIGH");
       mState = ST_LED_ON;
@@ -40,7 +40,7 @@ void TaskLED::_statechart() {
     if (mEvent == EV_LED_TURN_OFF) {
       digitalWrite(mPin, LOW);
 
-      Serial.print("BOTON ");
+      Serial.print("LED ");
       Serial.print(mPin);
       Serial.println(": LOW");
       mState = ST_LED_OFF;

@@ -11,7 +11,7 @@
 class Executor {
   public:
     Executor(void);
-    void addTask(Task * task);
+    bool addTask(Task * task);
     void increaseTicks(unsigned long ticks);
     void init(void);
     void update(void);

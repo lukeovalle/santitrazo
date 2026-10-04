@@ -6,8 +6,14 @@ Executor::Executor() {
   mTasksSize = 0;
 }
 
-void Executor::addTask(Task * task) {
+// Devuelve false (y no agrega nada) si ya se alcanzó N_TASKS, para no
+// escribir fuera del arreglo mTasks.
+bool Executor::addTask(Task * task) {
+  if (task == nullptr || mTasksSize >= N_TASKS)
+    return false;
+
   mTasks[mTasksSize++] = task;
+  return true;
 }
 
 void Executor::increaseTicks(unsigned long ticks) {
