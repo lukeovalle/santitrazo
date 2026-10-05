@@ -63,16 +63,13 @@ void TaskController::_statechart(void) {
 
     int vel_max = 255; // valor máximo 255
 
-    if (pid > 0) {
-      mTareas->motor_izq->cambiarVelocidad(vel_max);
-      mTareas->motor_der->cambiarVelocidad(vel_max - pid);
-    } else if (pid < 0) {
-      mTareas->motor_izq->cambiarVelocidad(vel_max + pid);
-      mTareas->motor_der->cambiarVelocidad(vel_max);
-    } else {
-      mTareas->motor_izq->cambiarVelocidad(vel_max);
-      mTareas->motor_der->cambiarVelocidad(vel_max);
-    }
+    // pid > 0: la línea está a la derecha, frena el motor derecho.
+    // pid < 0: la línea está a la izquierda, frena el motor izquierdo.
+    // Uno suma y el otro resta; el CLAMP de TaskMotor::cambiarVelocidad()
+    // mantiene cada velocidad dentro de rango, así que el motor que "suma"
+    // se queda en el máximo.
+    mTareas->motor_izq->cambiarVelocidad(vel_max + pid);
+    mTareas->motor_der->cambiarVelocidad(vel_max - pid);
 
     break;
   }
