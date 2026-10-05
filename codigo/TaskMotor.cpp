@@ -7,7 +7,11 @@ void TaskMotor::init(void) {
   mState = ST_MOTOR_OFF;
   mEvent = EV_MOTOR_IDLE;
   mVel = 0;
-  pinMode(mPin, OUTPUT);
+  pinMode(mPinPwm, OUTPUT);
+  pinMode(mPinIn1, OUTPUT);
+  pinMode(mPinIn2, OUTPUT);
+  digitalWrite(mPinIn1, LOW);
+  digitalWrite(mPinIn2, LOW);
 }
 
 void TaskMotor::update(void) {
@@ -24,7 +28,7 @@ void TaskMotor::encender(void) {
 
 void TaskMotor::cambiarVelocidad(int vel) {
   mEvent = EV_MOTOR_CHANGE_VELOCITY;
-  mVel = CLAMP(vel, 0, 255);
+  mVel = CLAMP(vel, -255, 255);
 }
 
 void TaskMotor::_statechart(void) {
@@ -54,13 +58,24 @@ void TaskMotor::_statechart(void) {
   mEvent = EV_MOTOR_IDLE;
 }
 
+void TaskMotor::_setDireccion(bool adelante) {
+  if (mInvertido)
+    adelante = !adelante;
+
+  digitalWrite(mPinIn1, adelante ? HIGH : LOW);
+  digitalWrite(mPinIn2, adelante ? LOW : HIGH);
+}
+
 void TaskMotor::_encenderPWM(void) {
-  analogWrite(mPin, mVel);
+  _setDireccion(mVel >= 0);
+  analogWrite(mPinPwm, mVel >= 0 ? mVel : -mVel);
 }
 
 void TaskMotor::_apagarPWM(void) {
   // Pongo mVel en 0 para que al volver a encender el motor no arranque
   // con la última velocidad de la corrida anterior.
   mVel = 0;
-  analogWrite(mPin, 0);
+  analogWrite(mPinPwm, 0);
+  digitalWrite(mPinIn1, LOW);
+  digitalWrite(mPinIn2, LOW);
 }

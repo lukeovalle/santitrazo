@@ -7,6 +7,13 @@
 
 #define TAM_SENSORES 4
 
+// Límite de la salida del PID, que se resta/suma a vel_max (255) en cada motor.
+//   510 (= 2 * 255): caso extremo, una rueda a +255 y la otra a -255.
+//   255:             el motor interno nunca pasa de 0, o sea sin marcha atrás.
+#ifndef PID_MAX
+#define PID_MAX 510
+#endif
+
 // declaraciones de clases a usar
 class TaskLED;
 class TaskBoton;

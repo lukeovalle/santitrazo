@@ -59,15 +59,20 @@ void TaskController::_statechart(void) {
     }
 
     // Lógica del PID
+    // _calcularPID() tiene efectos secundarios (integral, error previo), así que
+    // se llama una sola vez: CLAMP es un macro y evalúa sus argumentos más de una vez.
     int pid = _calcularPID();
+    pid = CLAMP(pid, -PID_MAX, PID_MAX);
 
     int vel_max = 255; // valor máximo 255
 
     // pid > 0: la línea está a la derecha, frena el motor derecho.
     // pid < 0: la línea está a la izquierda, frena el motor izquierdo.
     // Uno suma y el otro resta; el CLAMP de TaskMotor::cambiarVelocidad()
-    // mantiene cada velocidad dentro de rango, así que el motor que "suma"
-    // se queda en el máximo.
+    // mantiene cada velocidad en [-255, 255]. El motor que "suma" se queda en
+    // el máximo y el que "resta" baja hasta 0 (pid = 255) y después gira hacia
+    // atrás. El caso extremo es |pid| >= 510: una rueda a +255 y la otra a -255,
+    // o sea girar sobre el lugar a máxima velocidad.
     mTareas->motor_izq->cambiarVelocidad(vel_max + pid);
     mTareas->motor_der->cambiarVelocidad(vel_max - pid);
 
