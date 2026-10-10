@@ -17,10 +17,11 @@ TaskSensor sensor1(17); // PC3
 TaskSensor sensor2(16); // PC2
 TaskSensor sensor3(15); // PC1
 TaskSensor sensor4(14); // PC0
-// Motores: TaskMotor(pin PWM/enable, IN1, IN2). Los pines de dirección son una
-// elección tentativa de pines libres; cambiarlos según cómo se cablee el puente H.
-TaskMotor motor_izq(5, 2, 4); // PWM PD5, IN1 PD2, IN2 PD4
-TaskMotor motor_der(6, 7, 8); // PWM PD6, IN1 PD7, IN2 PB0
+// Motores: TaskMotor(pin PWM adelante = IN1/IN3, pin PWM atrás = IN2/IN4).
+// ENA y ENB van siempre en alto (jumper puesto). Los cuatro pines tienen que
+// tener PWM; elección tentativa, cambiarla según cómo se cablee el puente H.
+TaskMotor motor_izq(5, 6);  // adelante PD5 (IN1), atrás PD6 (IN2)
+TaskMotor motor_der(3, 11); // adelante PD3 (IN3), atrás PB3 (IN4)
 
 
 controller_contexto contexto = {

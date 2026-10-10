@@ -17,15 +17,20 @@ typedef enum {
   EV_MOTOR_CHANGE_VELOCITY,
 } task_motor_ev_t;
 
-// Motor con puente H: un pin PWM (enable) y dos pines de dirección (IN1, IN2).
-//   adelante: IN1 = HIGH, IN2 = LOW
-//   atrás:    IN1 = LOW,  IN2 = HIGH
+// Motor con puente H (L298N) manejado con DOS pines PWM, uno por sentido, y el
+// enable (ENA/ENB) siempre en alto (jumper puesto o cable a 5 V).
+//   vel > 0: PWM en pinAdelante, pinAtras = 0
+//   vel < 0: PWM en pinAtras,    pinAdelante = 0
+//   vel = 0: ambos pines en 0 (IN1 = IN2 = LOW con enable alto) => FRENO ACTIVO
+// Como la parte "apagada" del PWM también es freno (no rueda libre), el torque
+// cambia de forma continua al pasar por vel = 0: no hay salto entre 0 y +-1.
+// Los dos pines tienen que ser pines con PWM (en el 328P: 3, 5, 6, 9, 10, 11).
 // Si el motor gira al revés de lo esperado, pasar invertido = true (o
 // intercambiar los cables del motor).
 class TaskMotor : public Task {
   public:
-    TaskMotor(int pinPwm, int pinIn1, int pinIn2, bool invertido = false)
-      : mPinPwm(pinPwm), mPinIn1(pinIn1), mPinIn2(pinIn2), mInvertido(invertido) {}
+    TaskMotor(int pinAdelante, int pinAtras, bool invertido = false)
+      : mPinAdelante(pinAdelante), mPinAtras(pinAtras), mInvertido(invertido) {}
     void init(void) override;
     void update(void) override;
     void apagar(void);
@@ -34,9 +39,8 @@ class TaskMotor : public Task {
     void cambiarVelocidad(int vel);
 
   private:
-    int mPinPwm;
-    int mPinIn1;
-    int mPinIn2;
+    int mPinAdelante;
+    int mPinAtras;
     bool mInvertido;
     int mVel;
     task_motor_st_t mState;
@@ -44,7 +48,6 @@ class TaskMotor : public Task {
     void _statechart(void);
     void _encenderPWM(void);
     void _apagarPWM(void);
-    void _setDireccion(bool adelante);
 };
 
 #endif
