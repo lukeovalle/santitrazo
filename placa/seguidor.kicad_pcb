@@ -90,7 +90,7 @@
 		(capping no)
 		(filling no)
 		(pcbplotparams
-			(layerselection 0x00000000_00000000_55555555_55555554)
+			(layerselection 0x00000000_00000000_5555555d_55555554)
 			(plot_on_all_layers_selection 0x00000000_00000000_00000000_02000000)
 			(disableapertmacros no)
 			(usegerberextensions no)
@@ -1506,7 +1506,7 @@
 			)
 		)
 		(property "Value" "3.3k"
-			(at -0.508 1.6256 0)
+			(at 2.54 -1.016 0)
 			(layer "F.Fab")
 			(uuid "e8622b79-63d3-4a0c-af9f-3cb85d29dfb4")
 			(effects
@@ -4373,7 +4373,7 @@
 			)
 		)
 		(property "Value" "27k"
-			(at 6.604 -2.286 90)
+			(at 5.334 1.524 90)
 			(layer "F.Fab")
 			(uuid "3cd7ad1b-03b7-4729-94a0-2a3a5f82cfca")
 			(effects
@@ -5606,7 +5606,7 @@
 			)
 		)
 		(property "Value" "56k"
-			(at 2.54 1.92 0)
+			(at 0.254 0 0)
 			(layer "F.Fab")
 			(uuid "f935a6d4-6fb0-4863-b5c0-d58f3e030fae")
 			(effects
@@ -12169,7 +12169,7 @@
 			)
 		)
 		(property "Value" "56k"
-			(at 0.508 -1.778 90)
+			(at 0.254 -1.016 90)
 			(layer "F.Fab")
 			(uuid "f5a9f910-820e-41fb-bbc6-6d4f92d6156f")
 			(effects
