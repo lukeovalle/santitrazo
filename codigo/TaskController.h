@@ -4,13 +4,9 @@
 #define TASK_CONTROLLER__H_
 
 #include "Task.h"
+#include "config.h"
 
 #define TAM_SENSORES 4
-
-// Límite de la salida del PID, que se resta/suma a vel_max (255) en cada motor.
-//   510 (= 2 * 255): caso extremo, una rueda a +255 y la otra a -255.
-//   255:             el motor interno nunca pasa de 0, o sea sin marcha atrás.
-#define PID_MAX 510
 
 // declaraciones de clases a usar
 class TaskLED;
@@ -20,8 +16,7 @@ class TaskMotor;
 
 typedef enum {
   ST_CONTROLLER_INIT,
-  ST_CONTROLLER_RUNNING,
-  ST_CONTROLLER_TURBO
+  ST_CONTROLLER_RUNNING
 } task_controller_st_t;
 
 typedef enum {

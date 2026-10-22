@@ -8,8 +8,6 @@
 #include "TaskSensor.h"
 #include "TaskMotor.h"
 
-static int ticks = 10;
-
 void TaskController::init(void) {
   mState = ST_CONTROLLER_INIT;
   mEvent = EV_CONTROLLER_IDLE;
@@ -62,26 +60,28 @@ void TaskController::_statechart(void) {
     // Lógica del PID
     int pid = _calcularPID();
     pid = CLAMP(pid, -PID_MAX, PID_MAX);
+    
+    // validaciones del turbo
+    bool turbo = false;
+    if (abs(mPrevError) < 0.01) // solo entro al turbo en rectas
+      mTurboTicks++;
+    else
+      mTurboTicks = 0;
+    if (mTurboTicks >= TURBO_TICKS_ENTRADA && mTurboTicks <= TURBO_TICKS_DURACION)
+      turbo = true;
 
-    int vel_max = 220; // valor máximo 255
+    int vel_max = turbo ? VEL_TURBO : VEL_NORMAL;
 
     // pid > 0: la línea está a la derecha, frena el motor derecho.
     // pid < 0: la línea está a la izquierda, frena el motor izquierdo.
     // Uno suma y el otro resta; el CLAMP de TaskMotor::cambiarVelocidad()
     // mantiene cada velocidad en [-255, 255]. El motor que "suma" se queda en
-    // el máximo y el que "resta" baja hasta 0 (pid = 255) y después gira hacia
-    // atrás. El caso extremo es |pid| >= 510: una rueda a +255 y la otra a -255,
+    // el máximo y el que "resta" baja hasta 0 y después gira hacia atrás.
+    // El caso extremo es |pid| >= 510: una rueda a +255 y la otra a -255,
     // o sea girar sobre el lugar a máxima velocidad.
     mTareas->motor_izq->cambiarVelocidad(vel_max + pid);
     mTareas->motor_der->cambiarVelocidad(vel_max - pid);
 
-    break;
-  }
-
-  case ST_CONTROLLER_TURBO: {
-    if (!mTurboTicks)
-      mState = ST_CONTROLLER_RUNNING;
-    mTurboTicks--;
     break;
   }
 
@@ -95,34 +95,20 @@ void TaskController::_statechart(void) {
 }
 
 int TaskController::_calcularPID(void) {
-  const float k_prop = 1.0,
-              k_dif = 12,
-              k_inte = 1.3e-2;
-
   float error = _calcular_error();
 
   // parte proporcional
-  float prop = k_prop * error;
+  float prop = PID_KP * error;
 
   // parte integral
   mAcumIntegralError += error;
   mAcumIntegralError = CLAMP(mAcumIntegralError, -1e3, 1e3);
-  float integral = k_inte * mAcumIntegralError;
+  float integral = PID_KI * mAcumIntegralError;
 
   // parte diferencial
-  // podría dividir por un dt pero asumo que es constante y "está incluído " en k_dif
+  // podría dividir por un dt pero asumo que es constante y "está incluído " en PID_KD
   float de_dt = (error - mPrevError);
-  float diferencial = k_dif * de_dt;
-
-  ticks--;
-  if (!ticks) {
-    Serial.print(prop);
-    Serial.print(",");
-    Serial.print(integral);
-    Serial.print(",");
-    Serial.println(diferencial);
-    ticks = 10;
-  }
+  float diferencial = PID_KD * de_dt;
 
   mPrevError = error;
   return (int)(prop + integral + diferencial);
