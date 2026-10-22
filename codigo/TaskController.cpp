@@ -39,7 +39,7 @@ void TaskController::update(void) {
 
 void TaskController::_statechart(void) {
   switch (mState) {
-  case ST_CONTROLLER_INIT:
+  case ST_CONTROLLER_INIT: {
     if (mEvent == EV_CONTROLLER_BUTTON_PRESSED) {
       _reiniciarPID();
       mTareas->led_arranque->encender();
@@ -48,6 +48,7 @@ void TaskController::_statechart(void) {
       mState = ST_CONTROLLER_RUNNING;
     }
     break;
+  }
 
   case ST_CONTROLLER_RUNNING: {
     if (mEvent == EV_CONTROLLER_BUTTON_PRESSED) {
@@ -60,31 +61,42 @@ void TaskController::_statechart(void) {
 
     // Lógica del PID
     int pid = _calcularPID();
+    pid = CLAMP(pid, -PID_MAX, PID_MAX);
 
-    int vel_max = 255; // valor máximo 255
+    int vel_max = 220; // valor máximo 255
 
     // pid > 0: la línea está a la derecha, frena el motor derecho.
     // pid < 0: la línea está a la izquierda, frena el motor izquierdo.
     // Uno suma y el otro resta; el CLAMP de TaskMotor::cambiarVelocidad()
-    // mantiene cada velocidad dentro de rango, así que el motor que "suma"
-    // se queda en el máximo.
+    // mantiene cada velocidad en [-255, 255]. El motor que "suma" se queda en
+    // el máximo y el que "resta" baja hasta 0 (pid = 255) y después gira hacia
+    // atrás. El caso extremo es |pid| >= 510: una rueda a +255 y la otra a -255,
+    // o sea girar sobre el lugar a máxima velocidad.
     mTareas->motor_izq->cambiarVelocidad(vel_max + pid);
     mTareas->motor_der->cambiarVelocidad(vel_max - pid);
 
     break;
   }
 
-  default:
+  case ST_CONTROLLER_TURBO: {
+    if (!mTurboTicks)
+      mState = ST_CONTROLLER_RUNNING;
+    mTurboTicks--;
+    break;
+  }
+
+  default: {
     mState = ST_CONTROLLER_INIT;
     break;
+  }
   }
 
   mEvent = EV_CONTROLLER_IDLE;
 }
 
 int TaskController::_calcularPID(void) {
-  const float k_prop = 1.3,
-              k_dif = 13,
+  const float k_prop = 1.0,
+              k_dif = 12,
               k_inte = 1.3e-2;
 
   float error = _calcular_error();

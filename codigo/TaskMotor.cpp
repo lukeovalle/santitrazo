@@ -7,7 +7,10 @@ void TaskMotor::init(void) {
   mState = ST_MOTOR_OFF;
   mEvent = EV_MOTOR_IDLE;
   mVel = 0;
-  pinMode(mPin, OUTPUT);
+  pinMode(mPinAdelante, OUTPUT);
+  pinMode(mPinAtras, OUTPUT);
+  analogWrite(mPinAdelante, 0);
+  analogWrite(mPinAtras, 0);
 }
 
 void TaskMotor::update(void) {
@@ -24,7 +27,7 @@ void TaskMotor::encender(void) {
 
 void TaskMotor::cambiarVelocidad(int vel) {
   mEvent = EV_MOTOR_CHANGE_VELOCITY;
-  mVel = CLAMP(vel, 0, 255);
+  mVel = CLAMP(vel, -255, 255);
 }
 
 void TaskMotor::_statechart(void) {
@@ -55,12 +58,24 @@ void TaskMotor::_statechart(void) {
 }
 
 void TaskMotor::_encenderPWM(void) {
-  analogWrite(mPin, mVel);
+  int vel = mInvertido ? -mVel : mVel;
+
+  // Siempre pongo primero en 0 el pin del sentido que se apaga, así los dos
+  // pines nunca tienen PWM a la vez.
+  if (vel >= 0) {
+    analogWrite(mPinAtras, 0);
+    analogWrite(mPinAdelante, vel);
+  } else {
+    analogWrite(mPinAdelante, 0);
+    analogWrite(mPinAtras, -vel);
+  }
 }
 
 void TaskMotor::_apagarPWM(void) {
   // Pongo mVel en 0 para que al volver a encender el motor no arranque
   // con la última velocidad de la corrida anterior.
   mVel = 0;
-  analogWrite(mPin, 0);
+  // Ambos pines en 0 con el enable en alto: freno activo.
+  analogWrite(mPinAdelante, 0);
+  analogWrite(mPinAtras, 0);
 }
