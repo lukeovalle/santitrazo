@@ -48,6 +48,7 @@ class TaskController : public Task {
     float mPrevError = 0;
     float mAcumIntegralError = 0;
     unsigned int mTurboTicks = 0;
+    bool mLineaVisible = true;
     task_controller_st_t mState;
     task_controller_ev_t mEvent;
     void _statechart(void);

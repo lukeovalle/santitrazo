@@ -7,6 +7,8 @@
 #include "TaskMotor.h"
 #include "TaskController.h"
 
+#include "config.h"
+
 ClockMs reloj; // counts ms between calls (no se llama "clock" para no chocar con clock() de <time.h>)
 Executor executor;
 
@@ -33,7 +35,7 @@ controller_contexto contexto = {
   .motor_izq = &motor_izq,
   .motor_der = &motor_der
 };
-TaskController controlador(&contexto, 10); // corre cada 10ms
+TaskController controlador(&contexto, CONTROL_PERIODO_MS); // corre cada 10ms
 
 void setup() {
   // Agrego las tareas al ejecutor
@@ -48,7 +50,7 @@ void setup() {
 
   executor.addTask(&controlador);
 
-  Serial.begin(115200);
+  //Serial.begin(115200);
 
   reloj.init();
   executor.init();

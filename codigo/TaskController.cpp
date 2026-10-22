@@ -20,6 +20,7 @@ void TaskController::init(void) {
 void TaskController::_reiniciarPID(void) {
   mPrevError = 0;
   mAcumIntegralError = 0;
+  mTurboTicks = 0;
 }
 
 void TaskController::update(void) {
@@ -126,7 +127,8 @@ float TaskController::_calcular_error(void) {
   }
 
   // si no se leyeron sensores, uso el último valor así sigue doblando hasta volver a la línea
-  if (activos < 0.01f)
+  mLineaVisible = (activos >= 0.01f);
+  if (!mLineaVisible)
     return mPrevError;
 
   return suma / activos; // promedio
