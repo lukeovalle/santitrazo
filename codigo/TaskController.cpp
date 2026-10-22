@@ -39,7 +39,7 @@ void TaskController::update(void) {
 
 void TaskController::_statechart(void) {
   switch (mState) {
-  case ST_CONTROLLER_INIT:
+  case ST_CONTROLLER_INIT: {
     if (mEvent == EV_CONTROLLER_BUTTON_PRESSED) {
       _reiniciarPID();
       mTareas->led_arranque->encender();
@@ -48,6 +48,7 @@ void TaskController::_statechart(void) {
       mState = ST_CONTROLLER_RUNNING;
     }
     break;
+  }
 
   case ST_CONTROLLER_RUNNING: {
     if (mEvent == EV_CONTROLLER_BUTTON_PRESSED) {
@@ -59,12 +60,10 @@ void TaskController::_statechart(void) {
     }
 
     // Lógica del PID
-    // _calcularPID() tiene efectos secundarios (integral, error previo), así que
-    // se llama una sola vez: CLAMP es un macro y evalúa sus argumentos más de una vez.
     int pid = _calcularPID();
     pid = CLAMP(pid, -PID_MAX, PID_MAX);
 
-    int vel_max = 255; // valor máximo 255
+    int vel_max = 220; // valor máximo 255
 
     // pid > 0: la línea está a la derecha, frena el motor derecho.
     // pid < 0: la línea está a la izquierda, frena el motor izquierdo.
@@ -79,17 +78,25 @@ void TaskController::_statechart(void) {
     break;
   }
 
-  default:
+  case ST_CONTROLLER_TURBO: {
+    if (!mTurboTicks)
+      mState = ST_CONTROLLER_RUNNING;
+    mTurboTicks--;
+    break;
+  }
+
+  default: {
     mState = ST_CONTROLLER_INIT;
     break;
+  }
   }
 
   mEvent = EV_CONTROLLER_IDLE;
 }
 
 int TaskController::_calcularPID(void) {
-  const float k_prop = 1.3,
-              k_dif = 13,
+  const float k_prop = 1.0,
+              k_dif = 12,
               k_inte = 1.3e-2;
 
   float error = _calcular_error();
