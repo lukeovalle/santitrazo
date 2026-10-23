@@ -9,7 +9,7 @@
 
 #include "config.h"
 
-ClockMs reloj; // counts ms between calls (no se llama "clock" para no chocar con clock() de <time.h>)
+ClockMs reloj; // contar ms entre llamados
 Executor executor;
 
 // Defino mis tareas
@@ -49,8 +49,6 @@ void setup() {
   executor.addTask(&motor_der);
 
   executor.addTask(&controlador);
-
-  //Serial.begin(115200);
 
   reloj.init();
   executor.init();

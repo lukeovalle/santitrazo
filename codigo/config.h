@@ -16,12 +16,12 @@
 #define PID_KI  1.3e-4
 
 // Velocidades normal y turbo. valor máximo = 255
-#define VEL_NORMAL  195
-#define VEL_TURBO   240
+#define VEL_NORMAL  160
+#define VEL_TURBO   215
 
 // Tiempos de entrada y duración del turbo
-#define TURBO_MS_ENTRADA  1000  // recta limpia antes de activar
-#define TURBO_MS_DURACION 2000  // máximo en turbo
+#define TURBO_MS_ENTRADA  1500  // recta limpia antes de activar
+#define TURBO_MS_DURACION 1000  // máximo en turbo
 
 // la duración son los ticks acumulados en la entrada + el tiempo real de duración
 #define TURBO_TICKS_ENTRADA   (TURBO_MS_ENTRADA / CONTROL_PERIODO_MS)
