@@ -68,11 +68,11 @@ void TaskController::_statechart(void) {
     if (mLineaVisible && fabs(mPrevError) <= limite) { // solo entro al turbo en rectas
       if (mTurboTicks  = TURBO_TICKS_DURACION)
         mTurboTicks++;
-    else { 
+    } else {
       mTurboTicks = 0;
     }
-    boolturbo = mTurboTicks >= TURBO_TICKS_ENTRADA && mTurboTicks <= TURBO_TICKS_DURACION;
-    
+    bool turbo = mTurboTicks >= TURBO_TICKS_ENTRADA && mTurboTicks <= TURBO_TICKS_DURACION;
+
     int vel_max = turbo ? VEL_TURBO : VEL_NORMAL;
 
     // pid > 0: la línea está a la derecha, frena el motor derecho.
