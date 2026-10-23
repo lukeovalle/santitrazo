@@ -66,7 +66,7 @@ void TaskController::_statechart(void) {
     bool turboPrevio = mTurboTicks >= TURBO_TICKS_ENTRADA && mTurboTicks <= TURBO_TICKS_DURACION;
     float limite = turboPrevio ? TURBO_ERROR_SALIDA : TURBO_ERROR_ENTRADA;
     if (mLineaVisible && fabs(mPrevError) <= limite) { // solo entro al turbo en rectas
-      if (mTurboTicks == TURBO_TICKS_DURACION)
+      if (mTurboTicks <= TURBO_TICKS_DURACION) // satura en DURACION + 1
         mTurboTicks++;
     } else {
       mTurboTicks = 0;
