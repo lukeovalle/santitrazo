@@ -11,24 +11,24 @@
 #define PID_MAX 510
 
 // Variables del PID
-#define PID_KP  1.5
-#define PID_KD  15.0
+#define PID_KP  0.65
+#define PID_KD  3.6
 #define PID_KI  1.3e-4
 
 // Velocidades normal y turbo. valor máximo = 255
-#define VEL_NORMAL  160
-#define VEL_TURBO   215
+#define VEL_NORMAL  150
+#define VEL_TURBO   235
 
 // Tiempos de entrada y duración del turbo
-#define TURBO_MS_ENTRADA  1500  // recta limpia antes de activar
-#define TURBO_MS_DURACION 1000  // máximo en turbo
+#define TURBO_MS_ENTRADA  800  // recta limpia antes de activar
+#define TURBO_MS_DURACION 1200  // máximo en turbo
 
 // la duración son los ticks acumulados en la entrada + el tiempo real de duración
 #define TURBO_TICKS_ENTRADA   (TURBO_MS_ENTRADA / CONTROL_PERIODO_MS)
 #define TURBO_TICKS_DURACION  (TURBO_TICKS_ENTRADA + TURBO_MS_DURACION / CONTROL_PERIODO_MS)
 
 // error admitido para entrar y para salir del turbo
-#define TURBO_ERROR_ENTRADA 100
-#define TURBO_ERROR_SALIDA  150
+#define TURBO_ERROR_ENTRADA 90
+#define TURBO_ERROR_SALIDA  140
 
 #endif
